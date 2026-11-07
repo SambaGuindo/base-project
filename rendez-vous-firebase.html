@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tu sors avec moi ?</title>
+<style>
+:root{--bg:#fdf2f6;--card:#fff;--text:#4a2335;--muted:#a07085;--pink:#e8457c;--pink2:#f7a8c4;--soft:#fde4ee;--line:#f3cfdd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1217;--card:#2a1b22;--text:#fbe6ee;--muted:#c79aae;--soft:#3a2430;--line:#4d2f3d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d1217;--card:#2a1b22;--text:#fbe6ee;--muted:#c79aae;--soft:#3a2430;--line:#4d2f3d;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;align-items:center;justify-content:center;padding:16px;overflow:hidden}
+.card{position:relative;z-index:2;background:var(--card);border-radius:22px;padding:28px 24px;width:100%;max-width:360px;text-align:center;box-shadow:0 10px 40px rgba(232,69,124,.18);animation:pop .35s ease}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
+.ico{width:46px;height:46px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px}
+h1{font-size:20px;margin:0 0 6px;color:var(--pink)}
+p{margin:0 0 16px;color:var(--muted);font-size:13px}
+.row{display:flex;gap:10px;justify-content:center;align-items:center;min-height:52px;position:relative}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px}
+.yes{background:#22c55e;color:#fff;padding:12px 26px;font-weight:700;font-size:16px;transition:transform .15s}
+.yes:hover{transform:scale(1.08)}
+.no{background:var(--soft);color:var(--pink);padding:10px 18px;font-size:13px;transition:left .15s,top .15s}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{background:var(--soft);border:2px solid transparent;color:var(--text);padding:14px 8px;font-size:13px;transition:.15s}
+.opt span{display:block;font-size:22px;margin-bottom:4px}
+.opt:hover{border-color:var(--pink2);transform:translateY(-2px)}
+.opt.on{border-color:var(--pink);background:var(--card)}
+input{width:100%;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--text);font:inherit;margin-bottom:10px}
+input:focus{outline:none;border-color:var(--pink)}
+.send{width:100%;background:var(--pink);color:#fff;padding:12px;font-weight:700}
+.send:disabled{opacity:.5;cursor:not-allowed}
+.big{font-size:26px;font-weight:800;color:var(--pink);letter-spacing:1px;margin:6px 0}
+.sum{text-align:left;background:var(--soft);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px}
+.sum div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.sum b{color:var(--muted);font-weight:500}
+.sum i{font-style:normal;color:var(--pink);font-weight:600;text-align:right;word-break:break-word}
+.link{background:none;color:var(--muted);font-size:12px;text-decoration:underline;margin-top:6px}
+.h{position:fixed;top:-30px;z-index:1;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.4}}
+</style>
+</head>
+<body>
+<div class="card" id="c"></div>
+<script>
+var d={type:"",lieu:"",contact:""};
+var c=document.getElementById("c");
+function show(html){c.style.animation="none";void c.offsetWidth;c.style.animation="";c.innerHTML=html}
+function hearts(n){for(var i=0;i<n;i++){var e=document.createElement("div");e.className="h";e.textContent=["💖","💗","💕","🌸"][i%4];e.style.left=Math.random()*100+"vw";e.style.fontSize=(14+Math.random()*16)+"px";e.style.animationDuration=(3+Math.random()*3)+"s";document.body.appendChild(e);setTimeout(function(x){x.remove()},6500,e)}}
+function s1(){
+ show('<div class="ico">💗</div><h1>Tu veux sortir avec moi ?</h1><p>Une question qui compte beaucoup pour moi 💌</p><div class="row" id="r"><button class="yes" onclick="s2()">Oui 💘</button><button class="no" id="n">Non</button></div>');
+ var n=document.getElementById("n");
+ function run(e){e.preventDefault();var r=document.getElementById("r").getBoundingClientRect();n.style.position="fixed";var x=Math.random()*(innerWidth-90),y=Math.random()*(innerHeight-50);n.style.left=x+"px";n.style.top=y+"px";n.textContent=["Non","Réessaie","Raté 😜","Pas possible","Hihi"][Math.floor(Math.random()*5)]}
+ n.addEventListener("mouseenter",run);n.addEventListener("touchstart",run);n.addEventListener("click",run);
+}
+function s2(){
+ hearts(30);
+ show('<div class="big">💖💖💖</div><h1 style="font-size:26px">YEEEES !!!</h1><p style="color:var(--text)">Tu viens de faire de moi la personne la plus heureuse !</p><p style="color:var(--pink);font-weight:700">C’est un rendez-vous ! 💕</p>');
+ setTimeout(s3,2600);
+}
+function opts(list,key,next,title,sub,ic){
+ var h='<div class="ico">'+ic+'</div><h1>'+title+'</h1><p>'+sub+'</p><div class="grid">';
+ list.forEach(function(o,i){h+='<button class="opt" data-i="'+i+'"><span>'+o[0]+'</span>'+o[1]+'</button>'});
+ show(h+'</div>');
+ c.querySelectorAll(".opt").forEach(function(b){b.onclick=function(){c.querySelectorAll(".opt").forEach(function(x){x.classList.remove("on")});b.classList.add("on");d[key]=list[b.dataset.i][1];setTimeout(next,350)}});
+}
+function s3(){opts([["☕","Café"],["🍽️","Dîner"],["🎬","Soirée ciné"],["🎨","Musée / Expo"],["🌿","Balade nature"],["🎮","Session jeux"]],"type",s4,"Quel genre de rendez-vous ?","Choisis ce qui te fait envie 💫","📅")}
+function s4(){opts([["📍","Ton endroit préféré"],["⭐","Mon endroit préféré"],["🎁","Surprise !"],["🤝","On décide ensemble"]],"lieu",s5,"Où est-ce qu’on va ?","Dis-moi l’endroit parfait","📍")}
+function s5(){
+ show('<div class="ico">💬</div><h1>Comment te joindre ?</h1><p>Ton numéro, Instagram ou autre réseau</p><input id="ct" placeholder="Numéro, @instagram…" autocomplete="off"><button class="send" id="sd" disabled>Envoyer 💌</button>');
+ var i=document.getElementById("ct"),b=document.getElementById("sd");
+ i.oninput=function(){b.disabled=!i.value.trim()};
+ b.onclick=function(){d.contact=i.value.trim();if(window.saveReponse)window.saveReponse(d);s6()};
+ i.focus();
+}
+function esc(t){var p=document.createElement("div");p.textContent=t;return p.innerHTML}
+function s6(){
+ hearts(24);
+ show('<div class="ico" style="background:#dcfce7">✅</div><h1>Parfait ! 🎉</h1><div class="sum"><div><b>Rendez-vous</b><i>'+esc(d.type)+'</i></div><div><b>Lieu</b><i>'+esc(d.lieu)+'</i></div><div><b>Contact</b><i>'+esc(d.contact)+'</i></div></div><p style="color:var(--text)">Je te contacte très bientôt ! 🚀</p><p>J’ai hâte de te voir 😊</p><button class="link" onclick="d={type:\'\',lieu:\'\',contact:\'\'};s1()">Recommencer</button>');
+}
+s1();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// 1) Remplace par TA config (Console Firebase > Paramètres du projet > Tes applications > Web)
+const firebaseConfig = {
+  apiKey: "TA_CLE",
+  authDomain: "TON_PROJET.firebaseapp.com",
+  projectId: "TON_PROJET",
+  appId: "TON_APP_ID"
+};
+const db = getFirestore(initializeApp(firebaseConfig));
+window.saveReponse = async (d) => {
+  try {
+    await addDoc(collection(db, "reponses"), {
+      typeRdv: d.type, lieu: d.lieu, contact: d.contact, date: serverTimestamp()
+    });
+  } catch (e) { console.error("Enregistrement impossible :", e); }
+};
+</script>
+</body>
+</html>
